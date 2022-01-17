@@ -10,6 +10,12 @@ services:
       - POSTGRES_NAME=${POSTGRES_NAME}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    healthcheck:
+      test: /usr/bin/pg_isready -u postgres
+      interval: 5s
+      timeout: 10s
+      retries: 30
+
   web:
     build:
       context: ./django-app
