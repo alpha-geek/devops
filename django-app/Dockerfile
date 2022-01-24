@@ -1,6 +1,9 @@
 FROM python:3.6
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+ENV \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    SERVER_MODE=develop
+
 WORKDIR /code
 COPY requirements.txt /code/
 RUN apt-get update && \
@@ -11,6 +14,7 @@ COPY . /code/
 WORKDIR /code/webapp
 EXPOSE 8080
 EXPOSE 8000
-ADD uwsgi.conf /uwsgi.conf
+ADD run.sh /run.sh
+RUN chmod 0755 /run.sh
 
-CMD ["uwsgi", "--ini", "/uwsgi.conf"]
+CMD ["/bin/bash", "/run.sh"]
